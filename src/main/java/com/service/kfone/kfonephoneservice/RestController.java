@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
@@ -24,7 +26,7 @@ public class RestController {
     }
 
     @GetMapping(value = "/mobiles")
-    public List<Mobile> findMobiles(@RequestParam(name = "price", required = false) Double price) {
+    public List<Mobile> getMobilesList(@RequestParam(name = "price", required = false) Double price) {
         if (price == null) {
             return mobileList;
         }
@@ -50,14 +52,14 @@ public class RestController {
     }
 
     @GetMapping(value = "/mobiles/price")
-    public double findPrice(@RequestParam String brand, @RequestParam String name) {
-        System.out.println("brand = " + brand);
-        System.out.println("name = " + name);
+    public Map<String, Double> findPrice(@RequestParam String brand, @RequestParam String name) {
+        Map<String, Double> priceMap = new HashMap<>();
         for (Mobile mobile : mobileList) {
             if (mobile.getBrand().equalsIgnoreCase(brand) && mobile.getName().equalsIgnoreCase(name)) {
-                return mobile.getPrice();
+                priceMap.put("price", mobile.getPrice());
+                break;
             }
         }
-        return 0.0;
+        return priceMap;
     }
 }

@@ -1,0 +1,105 @@
+openapi: 3.0.2
+info:
+  title: Mobile Online Store
+  description: >-
+    This is an API for the mock mobile online store 
+  version: 1.0.0
+security:
+  - default: []
+tags:
+  - name: mobile
+    description: Everything about Mobiles
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /mobiles:
+    get:
+      tags:
+        - mobile
+      description: Retrieve mobile inventory
+      operationId: getMobilesList
+      parameters:
+        - name: price
+          in: query
+          description: max price of the mobile
+          required: false
+          schema:
+            type: number
+            format: double
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/Mobile'
+  /mobiles/{brand}:
+    get:
+      tags:
+        - mobile
+      description: Retrieve the Status of an Order
+      operationId: findMobiles
+      parameters:
+        - name: brand
+          in: path
+          description: brand of the mobile
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mobile'
+  /mobiles/price:
+    get:
+      tags:
+        - mobile
+      description: Retrieve mobile price
+      operationId: findPrice
+      parameters:
+        - name: brand
+          in: query
+          description: brand of the mobile
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: name of the mobile
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/Price'
+components:
+  schemas:
+    Mobile:
+      type: array
+      items:
+        type: object
+        properties: 
+          brand:
+            type: string
+          name:
+            type: string
+          ratePerMonth:
+            type: number
+            format: double
+          price:
+            type: number
+            format: double
+    Price:
+      type: object
+      properties:
+        price:
+          type: number
+          format: double
